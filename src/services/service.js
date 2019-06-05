@@ -1,4 +1,4 @@
-export default class SwapiResource {
+export default class SwapiService {
     _apiBase = `https://swapi.co/api/`;
 
     async getResource(url) {
@@ -42,12 +42,12 @@ export default class SwapiResource {
         return this._transformStarShip(ship);
     }
 
-    _extractId(item) {
+    _extractId = (item) => {
         const idRegExp = /\/([0-9]*)\/$/;
         return item.url.match(idRegExp)[1];
-    }
+    };
 
-    _transformPlanet(planet) {
+    _transformPlanet = (planet) => {
         return {
             id: this._extractId(planet),
             name: planet.name,
@@ -55,21 +55,22 @@ export default class SwapiResource {
             rotationPeriod: planet.orbital_period,
             diameter: planet.diameter
         };
-    }
+    };
 
-    _transformPerson(person) {
+    _transformPerson = (person) => {
         return {
             id: this._extractId(person),
-            gender: person.gender,
+            name: person.name,
             birthYear: person.birth_year,
-            eyeColor: person.eye_color
+            eyeColor: person.eye_color,
+            gender: person.gender
 
         };
-    }
+    };
 
-    _transformStarShip(ship) {
+    _transformStarShip = (ship) => {
         return {
             id: this._extractId(ship),
         }
-    }
+    };
 }
