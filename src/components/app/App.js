@@ -19,15 +19,16 @@ export default class App extends Component {
     };
 
     componentDidCatch(error, errorInfo) {
-        this.setState({
-            hasError: true
-        });
-        console.log(error, errorInfo);
+        this.setState({ hasError: true });
     }
 
-    toggleRandomPlanet() {
-        console.log('asdfasdf');
-    }
+    toggleRandomPlanet = () => {
+        this.setState((state) => {
+            return {
+                showRandomPlanet: !state.showRandomPlanet
+            };
+        });
+    };
 
     render() {
         if (this.state.hasError) {
@@ -46,6 +47,7 @@ export default class App extends Component {
                         Toggle Random planet
                     </button>
                 </div>
+
                 <PeoplePage/>
 
                 <div className="row mb2">
@@ -53,6 +55,7 @@ export default class App extends Component {
                         <List
                             onItemSelected={this.onPersonSelected}
                             getData={this.swapiService.getAllPlanets}
+                            renderItem={(item) => <span>{item.name}</span>}
                         />
                     </div>
                     <div className="col-md-6">
@@ -65,6 +68,7 @@ export default class App extends Component {
                         <List
                             onItemSelected={this.onPersonSelected}
                             getData={this.swapiService.getAllStarShips}
+                            renderItem={(item) => <span>{item.name}</span>}
                         />
                     </div>
                     <div className="col-md-6">

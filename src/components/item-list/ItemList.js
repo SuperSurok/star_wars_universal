@@ -1,9 +1,8 @@
 import React, {Component} from "react";
-import "./List.css";
+import "./ItemList.css";
 import Spinner from "../spinner";
 
 export default class ItemList extends Component {
-
     state = {
         itemList: [],
         loading: true
@@ -11,20 +10,22 @@ export default class ItemList extends Component {
 
     componentDidMount() {
         const {getData} = this.props;
-        getData()
-            .then(itemList => {
-                this.setState({itemList});
-            });
+        getData().then(itemList => {
+            this.setState({itemList});
+        });
     }
 
     renderItems(arr) {
-        return arr.map(({id, name}) => {
+        return arr.map((item) => {
+            const {id} = item;
+            const label = this.props.renderItem(item);
             return (
                 <li
                     className="list-group-item"
                     onClick={() => this.props.onItemSelected(id)}
-                    key={id}>
-                    {name}
+                    key={id}
+                >
+                    {label}
                 </li>
             );
         });
