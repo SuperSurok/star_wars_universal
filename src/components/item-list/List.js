@@ -1,29 +1,27 @@
 import React, {Component} from "react";
-
 import "./List.css";
-import SwapiResource from "../../services/service";
 import Spinner from "../spinner";
 
 export default class ItemList extends Component {
-    swapiService = new SwapiResource();
 
     state = {
-        peopleList: [],
+        itemList: [],
         loading: true
     };
 
-    componentWillMount() {
-        this.swapiService
-            .getAllPeople()
-            .then((peopleList) => {
-                this.setState({peopleList});
+    componentDidMount() {
+        const {getData} = this.props;
+        getData()
+            .then(itemList => {
+                this.setState({itemList});
             });
     }
 
     renderItems(arr) {
         return arr.map(({id, name}) => {
             return (
-                <li className="list-group-item"
+                <li
+                    className="list-group-item"
                     onClick={() => this.props.onItemSelected(id)}
                     key={id}>
                     {name}
@@ -32,12 +30,11 @@ export default class ItemList extends Component {
         });
     }
 
-
     render() {
-        const {peopleList} = this.state;
-        const list = this.renderItems(peopleList);
+        const {itemList} = this.state;
+        const list = this.renderItems(itemList);
 
-        if (!peopleList) {
+        if (!itemList) {
             return <Spinner/>;
         }
 

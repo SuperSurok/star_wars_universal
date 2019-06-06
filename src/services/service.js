@@ -1,7 +1,7 @@
 export default class SwapiService {
     _apiBase = `https://swapi.co/api/`;
 
-    async getResource(url) {
+    getResource = async (url) => {
         const response = await fetch(`${this._apiBase}${url}`);
 
         if (!response.ok) {
@@ -10,37 +10,37 @@ export default class SwapiService {
         }
 
         return await response.json();
-    }
+    };
 
-    async getAllPeople() {
+     getAllPeople = async () => {
         const response = await this.getResource(`people`);
         return response.results.map(this._transformPerson);
-    }
+    };
 
-    async getPerson(id) {
+     getPerson = async (id) => {
         const person = await this.getResource(`people/${id}`);
         return this._transformPerson(person)
-    }
+    };
 
-    async getAllPlanets() {
+     getAllPlanets = async () => {
         const response = await this.getResource(`planets`);
         return response.results.map(this._transformPlanet);
-    }
+    };
 
-    async getPlanet(id) {
+     getPlanet = async (id) => {
         const planet = await this.getResource(`planets/${id}`);
         return this._transformPlanet(planet);
-    }
+    };
 
-    async getAllStarShips() {
+     getAllStarShips = async () => {
         const response = await this.getResource(`starships`);
         return response.results;
-    }
+    };
 
-    async getStarShip(id) {
+     getStarShip = async (id) => {
         const ship = await this.getResource(`starships/${id}`);
         return this._transformStarShip(ship);
-    }
+    };
 
     _extractId = (item) => {
         const idRegExp = /\/([0-9]*)\/$/;

@@ -3,12 +3,16 @@ import React, {Component} from "react";
 import Header from "../header";
 import RandomPlanet from "../random-planet";
 import List from "../item-list";
-import PeoplePage from "../people-page"
+import PeoplePage from "../people-page";
 
 import "./App.css";
 import ErrorIndicator from "../error-indicator";
+import PersonDetails from "../person-details";
+import SwapiService from "../../services/service";
 
 export default class App extends Component {
+    swapiService = new SwapiService();
+
     state = {
         showRandomPlanet: true,
         hasError: false
@@ -18,7 +22,11 @@ export default class App extends Component {
         this.setState({
             hasError: true
         });
-        console.log(error, errorInfo)
+        console.log(error, errorInfo);
+    }
+
+    toggleRandomPlanet() {
+        console.log('asdfasdf');
     }
 
     render() {
@@ -27,11 +35,43 @@ export default class App extends Component {
         }
         const planet = this.state.showRandomPlanet ? <RandomPlanet/> : null;
         return (
-            <div>
+            <React.Fragment>
                 <Header/>
                 {planet}
+                <div className="row mb2 button-row">
+                    <button
+                        className="toggle-planet btn btn-warning btn-lg"
+                        onClick={this.toggleRandomPlanet}
+                    >
+                        Toggle Random planet
+                    </button>
+                </div>
                 <PeoplePage/>
-            </div>
+
+                <div className="row mb2">
+                    <div className="col-md-6">
+                        <List
+                            onItemSelected={this.onPersonSelected}
+                            getData={this.swapiService.getAllPlanets}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <PersonDetails personId={this.state.selectedPerson}/>
+                    </div>
+                </div>
+
+                <div className="row mb2">
+                    <div className="col-md-6">
+                        <List
+                            onItemSelected={this.onPersonSelected}
+                            getData={this.swapiService.getAllStarShips}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <PersonDetails personId={this.state.selectedPerson}/>
+                    </div>
+                </div>
+            </React.Fragment>
         );
     }
 }
