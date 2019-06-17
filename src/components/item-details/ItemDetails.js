@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import "./ItemDetails.css";
 import Spinner from "../spinner";
+import SwapiService from "../../services/service";
 
 const Record = ({item, field, label}) => {
     return (
@@ -14,6 +15,8 @@ const Record = ({item, field, label}) => {
 export {Record};
 
 export default class ItemDetails extends Component {
+    swapiService = new SwapiService();
+
     state = {
         item: null,
         image: null
@@ -61,10 +64,9 @@ export default class ItemDetails extends Component {
                 <div className="card-body" key={id}>
                     <h4>{name}</h4>
                     <ul className="list-group list-group-flush">
-                        {React.Children.map(this.props.children, (child) => {
-                                return React.cloneElement(child, {item});
-                            }
-                        )}
+                        {React.Children.map(this.props.children, child => {
+                            return React.cloneElement(child, {item});
+                        })}
                     </ul>
                 </div>
             </div>

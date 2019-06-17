@@ -3,11 +3,11 @@ import Header from "../header";
 import RandomPlanet from "../random-planet";
 import ErrorIndicator from "../error-indicator";
 import ErrorBoundry from "../error-boundry";
-
 import "./App.css";
 import Row from "../row";
 import ItemDetails, {Record} from "../item-details";
 import SwapiService from "../../services/service";
+import ItemList from "../item-list";
 
 export default class App extends Component {
     state = {
@@ -21,14 +21,6 @@ export default class App extends Component {
         this.setState({hasError: true});
     }
 
-    toggleRandomPlanet = () => {
-        this.setState(state => {
-            return {
-                showRandomPlanet: !state.showRandomPlanet
-            };
-        });
-    };
-
     render() {
         if (this.state.hasError) {
             return <ErrorIndicator/>;
@@ -39,13 +31,17 @@ export default class App extends Component {
             getPerson,
             getStarShip,
             getPersonImage,
-            getStarshipImage
+            getStarshipImage,
+            getAllPeople,
+            getAllPlanets
         } = this.swapiService;
 
         const personDetails = (
             <ItemDetails itemId={11} getData={getPerson} getImageUrl={getPersonImage}>
                 <Record field="gender" label="Gender:"/>
-                <Record field="eyeColor" label="Eye Color:"/>
+                <Record field="eyeColor" label="Eye Color:" onItemSelected={() => {
+                }}/>
+                {({name}) => <span>{name}</span>}
             </ItemDetails>
         );
         const starShipDetails = (
@@ -57,18 +53,31 @@ export default class App extends Component {
                 <Record field="model" label="Model:"/>
                 <Record field="length" label="Length:"/>
                 <Record field="costInCredits" label="Cost in Credits:"/>
+                {({name}) => <span>{name}</span>}
             </ItemDetails>
         );
 
         return (
-            <React.Fragment>
-                <ErrorBoundry>
-                    <Header/>
-                    {planet}
-                    {/*<PeoplePage/>*/}
-                    <Row left={personDetails} right={starShipDetails}/>
-                </ErrorBoundry>
-            </React.Fragment>
+            <ErrorBoundry>
+                <React.Fragment>
+                    <ErrorBoundry>
+                        <Header/>
+                        {planet}
+                        <ItemList
+                            getData={getAllPeople}
+                            onItemSelected={() => {}}>
+                            {({name}) => <span>{name}</span>}
+                        </ItemList>
+
+                        <ItemList
+                            getData={getAllPlanets}
+                            onItemSelected={() => {}}>
+                            {({name}) => <span>{name}</span>}
+                        </ItemList>
+                        <Row left={personDetails} right={starShipDetails}/>
+                    </ErrorBoundry>
+                </React.Fragment>
+            </ErrorBoundry>
         );
     }
 }
