@@ -29,11 +29,11 @@ export default class PeoplePage extends Component {
             <ErrorBoundry>
                 <List
                     onItemSelected={this.onPersonSelected}
-                    getData={this.swapiService.getAllPeople}
-                    renderItem={({name, gender, birthYear}) =>
-                        `${name} ${gender} ${birthYear}`
-                    }
-                />
+                    getData={this.swapiService.getAllPeople}>
+                    {(i) => (
+                        `${i.name} ${i.gender} ${i.birthYear}`
+                    )}
+                </List>
             </ErrorBoundry>
         );
 

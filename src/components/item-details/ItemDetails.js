@@ -1,53 +1,59 @@
 import React, {Component} from "react";
 import "./ItemDetails.css";
-import SwapiService from "../../services/service";
 
-import Spinner from '../spinner';
+import Spinner from "../spinner";
 
 export default class ItemDetails extends Component {
+
     state = {
         item: null,
-        loading: true
+        image: null
     };
-
-    swapiService = new SwapiService();
 
     componentDidMount() {
         this.updateItem();
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.itemId !== prevProps.itemId) {
+        if (this.props.itemId !== prevProps.itemId) {
             this.updateItem();
         }
     }
 
     updateItem() {
-        const {itemId} = this.props;
+        const { itemId, getData, getImageUrl } = this.props;
         if (!itemId) {
             return;
         }
-        this.swapiService.getPerson(itemId).then(item => {
-            this.setState({item});
-        });
-        this.setState({loading: false})
+
+        getData(itemId)
+            .then((item) => {
+                this.setState({
+                    item,
+                    image: getImageUrl(item)
+                });
+            });
     }
 
     render() {
 
-        if(!this.state.item) {
-            return <Spinner/>;
+        const {item, image} = this.state;
+
+        if (!item) {
+            return <span>Select Item from a list</span>;
         }
 
-        const {id, name, gender, birthYear, eyeColor} = this.state.item;
-        if(!name) {return <Spinner/>}
+        const {id, name, gender, birthYear, eyeColor } = item;
+        if (!name) {
+            return <Spinner/>;
+        }
 
         return (
             <div className="item-details card">
                 <img
                     alt="item details"
                     className="item-image"
-                    src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
+                    src={image}
                 />
                 <div className="card-body" key={id}>
                     <h4>{name}</h4>
