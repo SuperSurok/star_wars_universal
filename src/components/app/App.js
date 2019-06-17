@@ -1,13 +1,12 @@
 import React, {Component} from "react";
 import Header from "../header";
 import RandomPlanet from "../random-planet";
-import PeoplePage from "../people-page";
 import ErrorIndicator from "../error-indicator";
 import ErrorBoundry from "../error-boundry";
 
 import "./App.css";
 import Row from "../row";
-import ItemDetails from "../item-details";
+import ItemDetails, {Record} from "../item-details";
 import SwapiService from "../../services/service";
 
 export default class App extends Component {
@@ -40,20 +39,21 @@ export default class App extends Component {
             getPerson,
             getStarShip,
             getPersonImage,
-            getStarshipImage,
+            getStarshipImage
         } = this.swapiService;
 
         const personDetails = (
-            <ItemDetails
-                itemId={11}
-                getData={getPerson}
-                getImageUrl={getPersonImage}/>
+            <ItemDetails itemId={11} getData={getPerson} getImageUrl={getPersonImage}>
+                <Record field="gender" label="Gender"/>
+                <Record field="eyeColor" label="Eye Color"/>
+            </ItemDetails>
         );
         const starShipDetails = (
             <ItemDetails
                 itemId={5}
                 getData={getStarShip}
-                getImageUrl={getStarshipImage}/>
+                getImageUrl={getStarshipImage}
+            />
         );
 
         return (
@@ -61,15 +61,6 @@ export default class App extends Component {
                 <ErrorBoundry>
                     <Header/>
                     {planet}
-                    {/*<div className="row mb2 button-row">*/}
-                    {/*    <button*/}
-                    {/*        className="toggle-planet btn btn-warning btn-lg"*/}
-                    {/*        onClick={this.toggleRandomPlanet}*/}
-                    {/*    >*/}
-                    {/*        Toggle Random planet*/}
-                    {/*    </button>*/}
-                    {/*</div>*/}
-
                     {/*<PeoplePage/>*/}
                     <Row left={personDetails} right={starShipDetails}/>
                 </ErrorBoundry>
